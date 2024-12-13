@@ -1,0 +1,10 @@
+com\bank\routes\Routes.class
+com\bank\repository\Auth.class
+com\bank\controller\AuthController.class
+com\bank\models\People.class
+com\bank\controller\IndexController.class
+com\bank\server\Server.class
+com\bank\models\ClientStandard.class
+com\bank\hooks\useAuth.class
+com\bank\Main.class
+com\bank\services\Token.class
