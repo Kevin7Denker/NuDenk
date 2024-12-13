@@ -53,11 +53,9 @@ public class AuthController {
             ctx.redirect("/show");
 
         } catch (Exception e) {
-            Map<String, Object> ms = new HashMap<>();
-
-            ms.put("mensagem", e.getMessage());
-
-            ctx.render("/auth/register.html", ms);
+            ctx.status(400);
+            ctx.result(e.getMessage());
+            ctx.redirect("/register.html");
         }
 
     };
