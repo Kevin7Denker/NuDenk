@@ -66,15 +66,14 @@ public class ClientStandardDAO {
             return null;
         }
 
-    
     }
 
     public ArrayList<ClientStandard> getClientes() {
- 
+
         try {
- 
+
             var sql = "SELECT * FROM ClientStandard_bank";
- 
+
             var stmt = connection.prepareStatement(sql);
 
             var rs = stmt.executeQuery();
