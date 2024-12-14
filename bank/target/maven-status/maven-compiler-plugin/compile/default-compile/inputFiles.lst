@@ -1,6 +1,8 @@
 C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\controller\AuthController.java
 C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\controller\IndexController.java
-C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\hooks\useAuth.java
+C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\data\dao\ClientStandardDAO.java
+C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\data\jdbc\JDBCBank.java
+C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\hooks\AuthContext.java
 C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\Main.java
 C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\models\ClientStandard.java
 C:\Users\kevin\OneDrive\Documentos\GitHub\Denker's Bank\bank\src\main\java\com\bank\models\People.java
