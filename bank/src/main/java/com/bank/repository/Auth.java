@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.bank.data.dao.ClientStandardDAO;
+import com.bank.hooks.AuthContext;
 import com.bank.models.ClientStandard;
 
 import io.javalin.http.Context;
@@ -12,30 +13,34 @@ import io.javalin.http.Context;
 public class Auth {
 
     private static ClientStandardDAO clientStandardDAO;
+    private static AuthContext context;
 
     public Auth() {
         clientStandardDAO = new ClientStandardDAO();
+        context = new AuthContext();
     }
 
-    public void login(Context ctx, String email, String password) throws Error {
-
+    public ClientStandard login(Context ctx, String email, String password) throws Error {
         try {
-
             ClientStandard client = clientStandardDAO.getClientByEmail(email);
 
             if (client == null) {
                 throw new Error("Cliente não encontrado.");
             }
 
-            if (checkPassword(password, client.getPassword())) {
+            if (!checkPassword(password, client.getPassword())) {
                 throw new Error("Senha incorreta.");
             }
 
-        } catch (Exception e) {
+            context.login(client.getEmail(), client.getNome(), client.getSaldo());
 
+            System.out.println("Cliente logado: " + client.getNome());
+
+            return client;
+
+        } catch (Exception e) {
             throw new Error(e.getMessage());
         }
-
     }
 
     public void register(Context ctx, String nome, String cpf, String email, String password, String telefone, String endereco, Double saldo) throws Error {
