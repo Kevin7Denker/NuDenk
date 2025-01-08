@@ -24,8 +24,8 @@ public class AuthMiddleware {
                 ctx.status(401).json("Token inválido.");
             }
         } else {
-            ctx.status(401).json("Usuário não está logado.");
+
+            ctx.attribute("isAuthenticated", false);
         }
     };
-
 }

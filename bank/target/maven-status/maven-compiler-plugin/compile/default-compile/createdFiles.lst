@@ -10,3 +10,4 @@ com\bank\models\ClientStandard.class
 com\bank\Main.class
 com\bank\hooks\AuthContext.class
 com\bank\services\Token.class
+com\bank\middleware\AuthMiddleware.class

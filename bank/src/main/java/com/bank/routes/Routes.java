@@ -15,19 +15,25 @@ public class Routes {
     public void RoutesInit(Javalin app) {
 
         app.before(middleware.authMiddleware);
-        if (middleware.authMiddleware != null) {
-            app.get("/", authController.home);
-            app.get("/show", authController.show);
 
-        } else {
-            app.get("/", indexController.welcome);
-            app.get("/register", authController.signUp);
-            app.post("/register", authController.register);
+        app.get("/", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                authController.home.handle(ctx);
+            } else {
 
-            app.get("/login", authController.signIn);
-            app.post("/login", authController.login);
-        }
+                indexController.welcome.handle(ctx);
+            }
 
+        });
+
+        app.get("/show", authController.show);
+        app.get("/logout", authController.logout);
+
+        app.get("/register", authController.signUp);
+        app.post("/register", authController.register);
+
+        app.get("/login", authController.signIn);
+        app.post("/login", authController.login);
     }
 
 }

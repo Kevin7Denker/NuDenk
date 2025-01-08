@@ -31,11 +31,11 @@ public class AuthController {
         Map<String, Object> dados = new HashMap<>();
         dados.put("clientes", clientes);
 
-        ctx.render("show.html", dados);
+        ctx.render("/pages/show.html", dados);
     };
 
     public Handler signUp = (Context ctx) -> {
-        ctx.render("/auth/register.html");
+        ctx.render("/pages/auth/register.html");
     };
 
     public Handler register = (Context ctx) -> {
@@ -55,12 +55,12 @@ public class AuthController {
         } catch (NumberFormatException e) {
             ctx.status(400);
             ctx.result(e.getMessage());
-            ctx.redirect("/register.html");
+            ctx.redirect("/pages/register.html");
         }
     };
 
     public Handler signIn = (Context ctx) -> {
-        ctx.render("/auth/login.html");
+        ctx.render("/pages/auth/login.html");
     };
 
     public Handler login = (Context ctx) -> {
@@ -79,10 +79,7 @@ public class AuthController {
                 cookie.setSecure(true);
                 ctx.cookie(cookie);
 
-                ctx.redirect("/show");
-            } else {
-                ctx.status(401).result("Credenciais inválidas.");
-                ctx.redirect("/show");
+                ctx.redirect("/");
             }
         } catch (Error e) {
             ctx.status(400);
@@ -92,43 +89,59 @@ public class AuthController {
         } catch (Exception e) {
             ctx.status(500);
             ctx.result("Erro inesperado: " + e.getMessage());
-            ctx.redirect("/login");
+            ctx.redirect("/");
         }
     };
 
     public Handler logout = (Context ctx) -> {
         ctx.removeCookie("jwtToken");
-        ctx.redirect("/login");
+        ctx.redirect("/");
     };
 
     public Handler checkAuth = (Context ctx) -> {
-        String token = ctx.cookie("jwtToken");
 
-        if (token != null) {
-            try {
-                Claims claims = Token.validarToken(token);
-                System.out.println("Usuário autenticado: " + claims.getSubject());
-                ctx.json("Usuário está logado: " + claims.getSubject());
-            } catch (Exception e) {
-                ctx.status(401).json("Token inválido.");
+        try {
+
+            String token = ctx.cookie("jwtToken");
+
+            if (token != null) {
+                try {
+                    Claims claims = Token.validarToken(token);
+                    System.out.println("Usuário autenticado: " + claims.getSubject());
+                    ctx.json("Usuário está logado: " + claims.getSubject());
+                } catch (Exception e) {
+                    ctx.status(401).json("Token inválido.");
+                }
             }
-        } else {
-            ctx.status(401).json("Usuário não está logado.");
+
+        } catch (Exception e) {
+            ctx.status(500);
+            ctx.result("Erro inesperado: " + e.getMessage());
+            ctx.redirect("/");
         }
+
     };
 
     public Handler home = (Context ctx) -> {
 
-        AuthContext authContext = ctx.attribute("authContext");
+        try {
 
-        if (authContext != null && authContext.isLoggedIn()) {
-            String userName = authContext.getUserName();
-            double userBalance = authContext.getUserBalance();
+            AuthContext authContext = ctx.attribute("authContext");
 
-            ctx.json("Bem-vindo " + userName + "! Seu saldo é: " + userBalance);
-        } else {
-            ctx.status(403).json("Acesso negado.");
+            if (authContext != null && authContext.isLoggedIn()) {
+                String userName = authContext.getUserName();
+                double userBalance = authContext.getUserBalance();
+
+                ctx.json("Bem-vindo " + userName + "! Seu saldo é: " + userBalance);
+                ctx.render("/pages/private/home.html");
+            }
+
+        } catch (Exception e) {
+            ctx.status(500);
+            ctx.result("Erro inesperado: " + e.getMessage());
+            ctx.redirect("/");
         }
+
     };
 
 }

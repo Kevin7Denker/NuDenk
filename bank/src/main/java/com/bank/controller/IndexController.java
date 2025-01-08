@@ -6,7 +6,8 @@ import io.javalin.http.Handler;
 public class IndexController {
 
     public Handler welcome = (Context ctx) -> {
-        ctx.render("index.html");
+
+        ctx.render("/pages/index.html");
     };
 
 }
