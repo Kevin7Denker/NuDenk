@@ -141,7 +141,7 @@ footer {
         justify-content: center;
         display: flex;
         flex-direction: column;
-        gap: 3.5rem;
+        gap: 3rem;
     }
     .container-title h1 {
         font-size: 2rem;

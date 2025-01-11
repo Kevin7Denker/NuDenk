@@ -29,11 +29,37 @@ public class Routes {
         app.get("/show", authController.show);
         app.get("/logout", authController.logout);
 
-        app.get("/register", authController.signUp);
-        app.post("/register", authController.register);
+        app.get("/register", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                ctx.status(403).result("Already logged in");
+            } else {
+                authController.signUp.handle(ctx);
+            }
+        });
 
-        app.get("/login", authController.signIn);
-        app.post("/login", authController.login);
+        app.post("/register", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                ctx.status(403).result("Already logged in");
+            } else {
+                authController.register.handle(ctx);
+            }
+        });
+
+        app.get("/login", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                ctx.status(403).result("Already logged in");
+            } else {
+                authController.signIn.handle(ctx);
+            }
+        });
+
+        app.post("/login", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                ctx.status(403).result("Already logged in");
+            } else {
+                authController.login.handle(ctx);
+            }
+        });
     }
 
 }
