@@ -16,15 +16,15 @@ public class ClientStandardDAO {
 
         try {
 
-            var sql = "INSERT INTO ClientStandard_bank (nome, cpf, email, password, telefone, endereco, saldo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            var sql = "INSERT INTO ClientStandard_bank (nome, sobrenome , cpf, email, password, endereco, saldo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
             var stmt = connection.prepareStatement(sql);
 
             stmt.setString(1, clientStandard.getNome());
-            stmt.setString(2, clientStandard.getCpf());
-            stmt.setString(3, clientStandard.getEmail());
-            stmt.setString(4, clientStandard.getPassword());
-            stmt.setString(5, clientStandard.getTelefone());
+            stmt.setString(2, clientStandard.getSobrenome());
+            stmt.setString(3, clientStandard.getCpf());
+            stmt.setString(4, clientStandard.getEmail());
+            stmt.setString(5, clientStandard.getPassword());
             stmt.setString(6, clientStandard.getEndereco());
             stmt.setDouble(7, clientStandard.getSaldo());
 
@@ -53,8 +53,8 @@ public class ClientStandardDAO {
 
             if (rs.next()) {
 
-                ClientStandard client = new ClientStandard(rs.getString("nome"), rs.getString("cpf"), rs.getString("email"),
-                        rs.getString("password"), rs.getString("telefone"), rs.getString("endereco"), rs.getDouble("saldo"));
+                ClientStandard client = new ClientStandard(rs.getString("nome"), rs.getString("sobrenome"), rs.getString("cpf"), rs.getString("email"),
+                        rs.getString("password"), rs.getString("endereco"));
 
                 return client;
             }
@@ -82,9 +82,8 @@ public class ClientStandardDAO {
 
             while (rs.next()) {
 
-                ClientStandard client = new ClientStandard(rs.getString("nome"), rs.getString("cpf"),
-                        rs.getString("email"), rs.getString("password"), rs.getString("telefone"), rs.getString("endereco"),
-                        rs.getDouble("saldo"));
+                ClientStandard client = new ClientStandard(rs.getString("nome"), rs.getString("sobrenome"), rs.getString("cpf"),
+                        rs.getString("email"), rs.getString("password"), rs.getString("endereco"));
 
                 clientes.add(client);
             }

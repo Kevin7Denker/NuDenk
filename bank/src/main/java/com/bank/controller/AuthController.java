@@ -41,14 +41,13 @@ public class AuthController {
     public Handler register = (Context ctx) -> {
         try {
             String nome = ctx.formParam("nome");
+            String sobrenome = ctx.formParam("sobrenome");
             String cpf = ctx.formParam("cpf");
             String email = ctx.formParam("email");
             String password = ctx.formParam("password");
-            String telefone = ctx.formParam("telefone");
             String endereco = ctx.formParam("endereco");
-            Double saldo = Double.valueOf(ctx.formParam("saldo"));
 
-            authRepo.register(ctx, nome, cpf, email, password, telefone, endereco, saldo);
+            authRepo.register(ctx, nome, sobrenome, cpf, email, password, endereco);
 
             ctx.redirect("/show");
 

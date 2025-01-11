@@ -63,7 +63,7 @@ section {
                 transition: 0.5s;
                 font-weight: 400;
                 font-size: 0.8rem;
-                border: 1px solid;
+
                 font-family: inherit;
                 text-transform: uppercase;
                 z-index: 1;
@@ -74,8 +74,8 @@ section {
             button::after {
                 content: "";
                 display: block;
-                width: 50px;
-                height: 50px;
+                width: 10px;
+                height: 10px;
                 transform: translate(-50%, -50%);
                 position: absolute;
                 border-radius: 50%;
@@ -208,7 +208,7 @@ footer {
     }
 
     .copyright {
-        padding: 2rem;
+        padding: 1rem;
         display: flex;
         align-items: center;
         justify-content: center;

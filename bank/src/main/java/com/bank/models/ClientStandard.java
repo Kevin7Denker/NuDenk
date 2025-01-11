@@ -4,9 +4,8 @@ public class ClientStandard extends People {
 
     private double saldo;
 
-    public ClientStandard(String nome, String cpf, String email, String password, String telefone, String endereco, double saldo) {
-        super(nome, cpf, email, password, telefone, endereco);
-        this.saldo = saldo;
+    public ClientStandard(String nome, String sobrenome, String cpf, String email, String password, String endereco) {
+        super(nome, sobrenome, cpf, email, password, endereco);
     }
 
     public double getSaldo() {
@@ -21,7 +20,7 @@ public class ClientStandard extends People {
     public String toString() {
         return "ClientStandard [saldo=" + saldo + ", getSaldo()=" + getSaldo() + ", getNome()=" + getNome()
                 + ", getCpf()=" + getCpf() + ", getEmail()=" + getEmail() + ", getPassword()=" + getPassword()
-                + ", getTelefone()=" + getTelefone() + ", getEndereco()=" + getEndereco() + "]";
+                + ", getEndereco()=" + getEndereco() + "]";
     }
 
 }

@@ -43,7 +43,7 @@ public class Auth {
         }
     }
 
-    public void register(Context ctx, String nome, String cpf, String email, String password, String telefone, String endereco, Double saldo) throws Error {
+    public void register(Context ctx, String nome, String sobrenome, String cpf, String email, String password, String endereco) throws Error {
 
         try {
 
@@ -51,7 +51,7 @@ public class Auth {
                 throw new Error("Cliente ja cadastrado.");
             }
 
-            ClientStandard client = new ClientStandard(nome, cpf, email, hashPassword(password), telefone, endereco, saldo);
+            ClientStandard client = new ClientStandard(nome, sobrenome, cpf, email, hashPassword(password), endereco);
 
             boolean res = clientStandardDAO.createClientStandard(client);
 

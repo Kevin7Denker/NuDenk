@@ -3,18 +3,18 @@ package com.bank.models;
 public class People {
 
     private String nome;
+    private String sobrenome;
     private String cpf;
     private String email;
     private String password;
-    private String telefone;
     private String endereco;
 
-    public People(String nome, String cpf, String email, String password, String telefone, String endereco) {
+    public People(String nome, String sobrenome, String cpf, String email, String password, String endereco) {
         this.nome = nome;
+        this.sobrenome = sobrenome;
         this.cpf = cpf;
         this.email = email;
         this.password = password;
-        this.telefone = telefone;
         this.endereco = endereco;
     }
 
@@ -24,6 +24,14 @@ public class People {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getSobrenome() {
+        return sobrenome;
+    }
+
+    public void setSobrenome(String sobrenome) {
+        this.sobrenome = sobrenome;
     }
 
     public String getCpf() {
@@ -46,16 +54,8 @@ public class People {
         return password;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
     }
 
     public String getEndereco() {
