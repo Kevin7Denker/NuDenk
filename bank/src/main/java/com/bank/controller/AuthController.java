@@ -71,7 +71,7 @@ public class AuthController {
 
             if (client != null) {
 
-                String token = Token.gerarToken(client.getEmail(), client.getNome(), client.getSaldo());
+                String token = Token.gerarToken(client.getEmail(), client.getNome(), client.getSobrenome(), client.getCpf(), client.getSaldo());
                 Cookie cookie = new Cookie("jwtToken", token);
                 cookie.setMaxAge(3600);
                 cookie.setHttpOnly(true);
@@ -127,12 +127,23 @@ public class AuthController {
 
             AuthContext authContext = ctx.attribute("authContext");
 
-            if (authContext != null && authContext.isLoggedIn()) {
+            if (authContext.isLoggedIn()) {
+
+                Map<String, Object> dados = new HashMap<>();
+
                 String userName = authContext.getUserName();
+                String userSurname = authContext.getUserSurname();
+                String userEmail = authContext.getUserEmail();
+                String userCPF = authContext.getUserCPF();
                 double userBalance = authContext.getUserBalance();
 
-                ctx.json("Bem-vindo " + userName + "! Seu saldo é: " + userBalance);
-                ctx.render("/pages/private/home.html");
+                dados.put("userName", userName);
+                dados.put("userSurname", userSurname);
+                dados.put("userEmail", userEmail);
+                dados.put("userCPF", userCPF);
+                dados.put("userBalance", userBalance);
+
+                ctx.render("/pages/private/home.html", dados);
             }
 
         } catch (Exception e) {

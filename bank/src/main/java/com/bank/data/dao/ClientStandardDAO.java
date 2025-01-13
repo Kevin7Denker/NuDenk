@@ -68,6 +68,35 @@ public class ClientStandardDAO {
 
     }
 
+    public ClientStandard getClientByCpf(String cpf) {
+
+        try {
+
+            var sql = "SELECT * FROM ClientStandard_bank WHERE cpf = ?";
+
+            var stmt = connection.prepareStatement(sql);
+
+            stmt.setString(1, cpf);
+
+            var rs = stmt.executeQuery();
+
+            if (rs.next()) {
+
+                ClientStandard client = new ClientStandard(rs.getString("nome"), rs.getString("sobrenome"), rs.getString("cpf"), rs.getString("email"),
+                        rs.getString("password"), rs.getString("endereco"));
+
+                return client;
+            }
+
+            return null;
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return null;
+        }
+
+    }
+
     public ArrayList<ClientStandard> getClientes() {
 
         try {
@@ -95,6 +124,34 @@ public class ClientStandardDAO {
             return null;
         }
 
+    }
+
+    public boolean Creditar(double valor, String cpf) {
+        try {
+            var sql = "UPDATE ClientStandard_bank SET saldo = saldo + ? WHERE cpf = ?";
+            var stmt = connection.prepareStatement(sql);
+            stmt.setDouble(1, valor);
+            stmt.setString(2, cpf);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean Debitar(double valor, String cpf) {
+        try {
+            var sql = "UPDATE ClientStandard_bank SET saldo = saldo - ? WHERE cpf = ?";
+            var stmt = connection.prepareStatement(sql);
+            stmt.setDouble(1, valor);
+            stmt.setString(2, cpf);
+            int rowsUpdated = stmt.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
     }
 
 }

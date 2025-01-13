@@ -1,6 +1,7 @@
 package com.bank.routes;
 
 import com.bank.controller.AuthController;
+import com.bank.controller.BankController;
 import com.bank.controller.IndexController;
 import com.bank.middleware.AuthMiddleware;
 
@@ -11,6 +12,7 @@ public class Routes {
     private final IndexController indexController = new IndexController();
     private final AuthController authController = new AuthController();
     private final AuthMiddleware middleware = new AuthMiddleware();
+    private final BankController bankController = new BankController();
 
     public void RoutesInit(Javalin app) {
 
@@ -58,6 +60,30 @@ public class Routes {
                 ctx.status(403).result("Already logged in");
             } else {
                 authController.login.handle(ctx);
+            }
+        });
+
+        app.post("/credit", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.credit.handle(ctx);
+            } else {
+                ctx.status(401).result("Unauthorized");
+            }
+        });
+
+        app.post("/debit", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.debit.handle(ctx);
+            } else {
+                ctx.status(401).result("Unauthorized");
+            }
+        });
+
+        app.post("/transfer", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.transfer.handle(ctx);
+            } else {
+                ctx.status(401).result("Unauthorized");
             }
         });
     }

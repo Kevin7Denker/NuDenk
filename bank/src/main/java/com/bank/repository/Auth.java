@@ -32,7 +32,7 @@ public class Auth {
                 throw new Error("Senha incorreta.");
             }
 
-            context.login(client.getEmail(), client.getNome(), client.getSaldo());
+            context.login(client.getEmail(), client.getCpf(), client.getNome(), client.getSobrenome(), client.getSaldo());
 
             System.out.println("Cliente logado: " + client.getNome());
 
