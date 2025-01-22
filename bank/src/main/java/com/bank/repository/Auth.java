@@ -43,7 +43,7 @@ public class Auth {
         }
     }
 
-    public void register(Context ctx, String nome, String sobrenome, String cpf, String email, String password, String endereco) throws Error {
+    public void register(Context ctx, String nome, String sobrenome, String cpf, String email, String password) throws Error {
 
         try {
 
@@ -51,7 +51,7 @@ public class Auth {
                 throw new Error("Cliente ja cadastrado.");
             }
 
-            ClientStandard client = new ClientStandard(nome, sobrenome, cpf, email, hashPassword(password), endereco);
+            ClientStandard client = new ClientStandard(nome, sobrenome, cpf, email, hashPassword(password));
 
             boolean res = clientStandardDAO.createClientStandard(client);
 
@@ -73,12 +73,20 @@ public class Auth {
         return clientStandardDAO.getClientByEmail(email);
     }
 
+    public ClientStandard getClientByCPF(String cpf) {
+        return clientStandardDAO.getClientByCpf(cpf);
+    }
+
     public String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 
     public boolean checkPassword(String plainPassword, String hashedPassword) {
         return BCrypt.checkpw(plainPassword, hashedPassword);
+    }
+
+    public boolean updateUser(Context ctx, String nome, String sobrenome, String email, String cpf) {
+        return clientStandardDAO.updateClientStandard(nome, sobrenome, email, cpf);
     }
 
 }

@@ -11,46 +11,62 @@ public class BankController {
     private final Bank bankService = new Bank();
     private AuthContext authContext;
 
-    public Handler credit = (Context ctx)
-            -> {
-        authContext = ctx.sessionAttribute("auth");
+    public Handler credit = (Context ctx) -> {
+        AuthContext authContext = ctx.attribute("authContext");
         if (authContext == null) {
-            ctx.status(401);
+            ctx.status(401).result("Unauthorized: Please log in.");
             return;
         }
 
-        double amount = Double.parseDouble(ctx.formParam("amount"));
-        bankService.Creditar(ctx, amount, authContext.getUserCPF());
-        ctx.status(200);
+        String amountStr = ctx.formParam("amount");
+        try {
+            double amount = Double.parseDouble(amountStr);
+            if (amount <= 0) {
+                ctx.status(400).result("Bad Request: Amount must be greater than zero.");
+                return;
+            }
 
+            boolean success = bankService.Creditar(ctx, amount, authContext.getUserCPF());
+            if (success) {
+                ctx.status(200).redirect("/");
+            } else {
+                ctx.status(500).result("Internal Server Error: Unable to process the deposit.");
+            }
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Bad Request: Invalid amount format.");
+        } catch (Exception e) {
+            System.err.println("Error during credit operation: " + e.getMessage());
+            ctx.status(500).result("Internal Server Error: " + e.getMessage());
+        }
     };
 
-    public Handler debit = (Context ctx)
-            -> {
-        authContext = ctx.sessionAttribute("auth");
+    public Handler transfer = (Context ctx) -> {
+        AuthContext authContext = ctx.attribute("authContext");
         if (authContext == null) {
-            ctx.status(401);
+            ctx.status(401).result("Unauthorized: Please log in.");
             return;
         }
 
-        double amount = Double.parseDouble(ctx.formParam("amount"));
-        bankService.Debitar(ctx, amount, authContext.getUserCPF());
-        ctx.status(200);
-
-    };
-
-    public Handler transfer = (Context ctx)
-            -> {
-        authContext = ctx.sessionAttribute("auth");
-        if (authContext == null) {
-            ctx.status(401);
-            return;
-        }
-
-        double amount = Double.parseDouble(ctx.formParam("amount"));
+        String amountStr = ctx.formParam("amount");
         String cpf = ctx.formParam("cpf");
-        bankService.Transferir(ctx, amount, authContext.getUserCPF(), cpf);
-        ctx.status(200);
+        try {
+            double amount = Double.parseDouble(amountStr);
+            if (amount <= 0) {
+                ctx.status(400).result("Bad Request: Amount must be greater than zero.");
+                return;
+            }
 
+            boolean success = bankService.Transferir(ctx, amount, authContext.getUserCPF(), cpf);
+            if (success) {
+                ctx.redirect("/");
+            } else {
+                ctx.status(500).result("Internal Server Error: Unable to process the transfer.");
+            }
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Bad Request: Invalid amount format.");
+        } catch (Exception e) {
+            System.err.println("Error during transfer operation: " + e.getMessage());
+            ctx.status(500).result("Internal Server Error: " + e.getMessage());
+        }
     };
 }

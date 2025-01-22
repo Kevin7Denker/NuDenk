@@ -49,4 +49,14 @@ public class Token {
     public static String pegarEmailToken(String token) {
         return validarToken(token).getSubject();
     }
+
+    public static String deleteToken(String token) {
+        return Jwts.builder()
+                .setSubject(token)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
+    }
+
 }

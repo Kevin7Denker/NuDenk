@@ -63,10 +63,14 @@ nav a {
     padding: 10px 15px;
     text-decoration: none;
     border-radius: 5px;
+    animation: fadeIn 1s ease-in-out;
+    transition: all 0.5s ease-in-out;
 }
 
 .button:hover {
     background-color: var(--primary-color);
+    transition: all 0.5s ease-in-out;
+    scale: 1.1;
 }
 
 footer {
@@ -359,5 +363,16 @@ footer {
     100% {
         transform: translatex(-370%);
         opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

@@ -22,7 +22,6 @@ public class Routes {
             if (ctx.attribute("authContext") != null) {
                 authController.home.handle(ctx);
             } else {
-
                 indexController.welcome.handle(ctx);
             }
 
@@ -44,6 +43,7 @@ public class Routes {
                 ctx.status(403).result("Already logged in");
             } else {
                 authController.register.handle(ctx);
+                ctx.redirect("/");
             }
         });
 
@@ -68,14 +68,16 @@ public class Routes {
                 bankController.credit.handle(ctx);
             } else {
                 ctx.status(401).result("Unauthorized");
+                ctx.redirect("/");
             }
         });
 
-        app.post("/debit", ctx -> {
+        app.get("/config", ctx -> {
             if (ctx.attribute("authContext") != null) {
-                bankController.debit.handle(ctx);
+                authController.config.handle(ctx);
             } else {
                 ctx.status(401).result("Unauthorized");
+                ctx.redirect("/");
             }
         });
 
@@ -84,6 +86,16 @@ public class Routes {
                 bankController.transfer.handle(ctx);
             } else {
                 ctx.status(401).result("Unauthorized");
+                ctx.redirect("/");
+            }
+        });
+
+        app.post("/updateUser", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                authController.updateUser.handle(ctx);
+            } else {
+                ctx.status(401).result("Unauthorized");
+                ctx.redirect("/");
             }
         });
     }

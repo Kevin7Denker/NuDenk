@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+        />
+
+        <script src="../../Scripts/config.js" defer></script>
+
+        <link rel="stylesheet" type="text/css" href="./Styles/global.css" />
+        <link rel="stylesheet" type="text/css" href="./Styles/config.css" />
+
+        <title>NuDenk</title>
+    </head>
+    <body>
+        <header>
+            <nav>
+                <a href="/"><h1>NuDenk</h1></a>
+                <ul>
+                    <li>
+                        <a href="/">
+                            <span class="material-symbols-outlined">
+                                arrow_back
+                            </span>
+                            back
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="main-container">
+            <div class="sidebar">
+                <div class="options">
+                    <a href="#" onclick="showComponent('user')">User</a>
+                    <a href="#" onclick="showComponent('options')">Options</a>
+                    <a href="#" onclick="showComponent('terms')"
+                        >terms of use</a
+                    >
+                </div>
+
+                <p>Kevin Denker @ 2025</p>
+            </div>
+
+            <div class="content" id="content">
+                <h2>Welcome</h2>
+                <p>Select an option from the menu.</p>
+            </div>
+        </div>
+
+        <script>
+            const userName = "${userName}";
+            const userSurname = "${userSurname}";
+            const userEmail = "${userEmail}";
+        </script>
+    </body>
+</html>

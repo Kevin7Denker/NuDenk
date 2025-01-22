@@ -7,6 +7,7 @@ import java.util.Map;
 import com.bank.hooks.AuthContext;
 import com.bank.models.ClientStandard;
 import com.bank.repository.Auth;
+import com.bank.repository.Bank;
 import com.bank.services.Token;
 
 import io.javalin.http.Context;
@@ -45,9 +46,8 @@ public class AuthController {
             String cpf = ctx.formParam("cpf");
             String email = ctx.formParam("email");
             String password = ctx.formParam("password");
-            String endereco = ctx.formParam("endereco");
 
-            authRepo.register(ctx, nome, sobrenome, cpf, email, password, endereco);
+            authRepo.register(ctx, nome, sobrenome, cpf, email, password);
 
             ctx.redirect("/show");
 
@@ -126,6 +126,7 @@ public class AuthController {
         try {
 
             AuthContext authContext = ctx.attribute("authContext");
+            Bank bankService = new Bank();
 
             if (authContext.isLoggedIn()) {
 
@@ -135,7 +136,7 @@ public class AuthController {
                 String userSurname = authContext.getUserSurname();
                 String userEmail = authContext.getUserEmail();
                 String userCPF = authContext.getUserCPF();
-                double userBalance = authContext.getUserBalance();
+                Double userBalance = bankService.getSaldo(ctx, authContext.getUserCPF());
 
                 dados.put("userName", userName);
                 dados.put("userSurname", userSurname);
@@ -152,6 +153,59 @@ public class AuthController {
             ctx.redirect("/");
         }
 
+    };
+
+    public Handler config = (Context ctx) -> {
+        AuthContext authContext = ctx.attribute("authContext");
+
+        if (authContext.isLoggedIn()) {
+            Map<String, Object> dados = new HashMap<>();
+
+            ClientStandard client = authRepo.getClientByCPF(authContext.getUserCPF());
+
+            String userName = client.getNome();
+            String userSurname = client.getSobrenome();
+            String userEmail = client.getEmail();
+
+            dados.put("userName", userName);
+            dados.put("userSurname", userSurname);
+            dados.put("userEmail", userEmail);
+
+            ctx.render("/pages/private/config.html", dados);
+        } else {
+            ctx.redirect("/login");
+        }
+    };
+
+    public Handler updateUser = (Context ctx) -> {
+        AuthContext authContext = ctx.attribute("authContext");
+
+        if (authContext.isLoggedIn()) {
+            try {
+                String nome = ctx.formParam("firstName");
+                String sobrenome = ctx.formParam("lastName");
+                String email = ctx.formParam("email");
+
+                String cpf = authContext.getUserCPF();
+
+                boolean res = authRepo.updateUser(ctx, nome, sobrenome, email, cpf);
+
+                if (res) {
+
+                    logout.handle(ctx);
+
+                } else {
+                    ctx.status(400);
+                    ctx.result("Erro ao atualizar usuario.");
+                }
+
+            } catch (Exception e) {
+                ctx.status(500);
+                ctx.result("Erro inesperado: " + e.getMessage());
+            }
+        } else {
+            ctx.redirect("/login");
+        }
     };
 
 }

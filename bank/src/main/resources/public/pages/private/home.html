@@ -19,10 +19,10 @@
     <body>
         <header>
             <nav>
-                <h1>NuDenk</h1>
+                <a href="/"><h1>NuDenk</h1></a>
                 <ul>
                     <li>
-                        <a href="/settings">
+                        <a href="/config">
                             <span class="material-symbols-outlined">
                                 settings
                             </span>
@@ -52,18 +52,19 @@
                     <div class="actions">
                         <h3>Quick Actions</h3>
                         <div class="action-buttons">
-                            <a href="/transfer" class="button">Transfer</a>
-                            <a href="/deposit" class="button">Deposit</a>
+                            <a href="#" class="button" onclick="openModal('transferModal')">Transfer</a>
+                            <a href="#" class="button" onclick="openModal('depositModal')">Deposit</a>
+                            <a href="#" class="button" onclick="openModal('extractModal')">Extract</a>
                         </div>
                     </div>
 
                     <div class="calendar">
                         <div class="calendar-header">
-                            <span class="month-picker" id="month-picker">
+                            <span class="monteh-picker" id="month-picker">
                                 May
                             </span>
                             <div class="year-picker" id="year-picker">
-                                <span class="year-change" id="pre-year">
+                                    <span class="year-change" id="pre-year">
                                     <pre><</pre>
                                 </span>
                                 <span id="year">2020 </span>
@@ -100,5 +101,92 @@
                 </div>
             </section>
         </main>
+
+        <!-- Modals -->
+        <div id="transferModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('transferModal')">&times;</span>
+                <h2>Transfer</h2>
+                <form>
+                    <!-- Form content for transfer -->
+                </form>
+            </div>
+        </div>
+
+        <div id="depositModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('depositModal')">&times;</span>
+                <h2>Deposit</h2>
+                <form>
+                    <!-- Form content for deposit -->
+                </form>
+            </div>
+        </div>
+
+        <div id="extractModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('extractModal')">&times;</span>
+                <h2>Extract</h2>
+                <form>
+                    <!-- Form content for extract -->
+                </form>
+            </div>
+        </div>
+
+        <script>
+            function openModal(modalId) {
+                document.getElementById(modalId).style.display = 'block';
+            }
+
+            function closeModal(modalId) {
+                document.getElementById(modalId).style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                const modals = document.getElementsByClassName('modal');
+                for (let i = 0; i < modals.length; i++) {
+                    if (event.target == modals[i]) {
+                        modals[i].style.display = 'none';
+                    }
+                }
+            }
+        </script>
+
+        <style>
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 1;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgb(0,0,0);
+                background-color: rgba(0,0,0,0.4);
+            }
+
+            .modal-content {
+                background-color: #fefefe;
+                margin: 15% auto;
+                padding: 20px;
+                border: 1px solid #888;
+                width: 80%;
+            }
+
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+            }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        </style>
     </body>
-</html>
+</html></div>

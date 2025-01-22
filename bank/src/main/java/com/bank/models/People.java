@@ -7,15 +7,13 @@ public class People {
     private String cpf;
     private String email;
     private String password;
-    private String endereco;
 
-    public People(String nome, String sobrenome, String cpf, String email, String password, String endereco) {
+    public People(String nome, String sobrenome, String cpf, String email, String password) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.cpf = cpf;
         this.email = email;
         this.password = password;
-        this.endereco = endereco;
     }
 
     public String getNome() {
@@ -56,14 +54,6 @@ public class People {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
     }
 
 }
