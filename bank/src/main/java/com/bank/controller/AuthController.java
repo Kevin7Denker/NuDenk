@@ -18,22 +18,7 @@ import io.jsonwebtoken.Claims;
 public class AuthController {
 
     private final Auth authRepo = new Auth();
-    private ArrayList<ClientStandard> clientes = new ArrayList<>();
 
-    public Handler show = (Context ctx) -> {
-        clientes = authRepo.getClientes();
-
-        if (clientes == null || clientes.isEmpty()) {
-            System.out.println("Nenhum cliente encontrado.");
-        } else {
-            System.out.println("Clientes encontrados: " + clientes);
-        }
-
-        Map<String, Object> dados = new HashMap<>();
-        dados.put("clientes", clientes);
-
-        ctx.render("/pages/show.html", dados);
-    };
 
     public Handler signUp = (Context ctx) -> {
         ctx.render("/pages/auth/register.html");
@@ -49,7 +34,7 @@ public class AuthController {
 
             authRepo.register(ctx, nome, sobrenome, cpf, email, password);
 
-            ctx.redirect("/show");
+            ctx.redirect("/");
 
         } catch (NumberFormatException e) {
             ctx.status(400);

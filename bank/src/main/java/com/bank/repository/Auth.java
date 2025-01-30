@@ -51,7 +51,9 @@ public class Auth {
                 throw new Error("Cliente ja cadastrado.");
             }
 
-            ClientStandard client = new ClientStandard(nome, sobrenome, cpf, email, hashPassword(password));
+            String hash = hashPassword(password);
+
+            ClientStandard client = new ClientStandard(nome, sobrenome, cpf, email, hash);
 
             boolean res = clientStandardDAO.createClientStandard(client);
 

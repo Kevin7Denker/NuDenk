@@ -27,7 +27,6 @@ public class Routes {
 
         });
 
-        app.get("/show", authController.show);
         app.get("/logout", authController.logout);
 
         app.get("/register", ctx -> {
@@ -93,6 +92,15 @@ public class Routes {
         app.post("/updateUser", ctx -> {
             if (ctx.attribute("authContext") != null) {
                 authController.updateUser.handle(ctx);
+            } else {
+                ctx.status(401).result("Unauthorized");
+                ctx.redirect("/");
+            }
+        });
+
+        app.get("/getTransfersRecent", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.getRecentTransfers.handle(ctx);
             } else {
                 ctx.status(401).result("Unauthorized");
                 ctx.redirect("/");

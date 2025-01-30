@@ -1,10 +1,14 @@
 package com.bank.repository;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.bank.data.dao.ClientStandardDAO;
 import com.bank.data.dao.DepositDAO;
 import com.bank.data.dao.TransferDAO;
+import com.bank.hooks.AuthContext;
 import com.bank.models.ClientStandard;
 import com.bank.models.Deposit;
 import com.bank.models.Transfer;
@@ -39,11 +43,12 @@ public class Bank {
                 throw new Error("Valor inválido.");
             }
 
-            clientStandardDAO.Creditar(valor, cpf);
+            if(clientStandardDAO.creditar(valor, cpf)){
+                depositDAO.createDeposit(deposit);
+                return true;
+            }
 
-            depositDAO.createDeposit(deposit);
-
-            return true;
+            return false;
 
         } catch (Exception e) {
             throw new Error(e.getMessage());
@@ -108,9 +113,48 @@ public class Bank {
             Debitar(ctx, valor, clientOrigem.getCpf());
             Creditar(ctx, valor, clientDestino.getCpf());
 
-            transferDAO.createTranfer(transfer);
+            if (transferDAO.createTranfer(transfer)) {
+                System.out.println("Transferência realizada com sucesso.");
+            }
 
             return true;
+
+        } catch (Exception e) {
+            throw new Error(e.getMessage());
+        }
+    }
+
+    public Transfer getTransferencias(Context ctx) {
+        try {
+
+           AuthContext authContext = ctx.attribute("authContext");
+
+            return transferDAO.getTransfers(authContext.getUserCPF());
+
+        } catch (Exception e) {
+            throw new Error(e.getMessage());
+        }
+    }
+
+    public Deposit getDepositos(Context ctx) {
+        try {
+
+            AuthContext authContext = ctx.attribute("authContext");
+
+            return depositDAO.getDeposits(authContext.getUserCPF());
+
+        } catch (Exception e) {
+            throw new Error(e.getMessage());
+        }
+    }
+
+    public List<Transfer> getTransfersLast7Days(Context ctx) {
+        try {
+            List<Transfer> transfers = new ArrayList<Transfer>();
+                
+            transfers.addAll(transferDAO.getTransfersLast7Days(ctx));
+
+            return transfers;
 
         } catch (Exception e) {
             throw new Error(e.getMessage());

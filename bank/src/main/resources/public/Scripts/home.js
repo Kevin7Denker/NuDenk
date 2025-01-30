@@ -152,3 +152,119 @@ setInterval(() => {
     )}: ${`${timer.getSeconds()}`.padStart(2, "0")}`;
     todayShowTime.textContent = formateTimer;
 }, 1000);
+
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    modal.style.display = "block";
+    modal.style.opacity = 0;
+    let opacity = 0;
+    const fadeIn = setInterval(() => {
+        if (opacity >= 1) {
+            clearInterval(fadeIn);
+        }
+        modal.style.opacity = opacity;
+        opacity += 0.1;
+    }, 30);
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    let opacity = 1;
+    const fadeOut = setInterval(() => {
+        if (opacity <= 0) {
+            clearInterval(fadeOut);
+            modal.style.display = "none";
+        }
+        modal.style.opacity = opacity;
+        opacity -= 0.1;
+    }, 30);
+}
+
+window.onclick = function (event) {
+    const modals = document.getElementsByClassName("modal");
+    for (let i = 0; i < modals.length; i++) {
+        if (event.target == modals[i]) {
+            modals[i].style.display = "none";
+        }
+    }
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/getTransfersRecent")
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            const transfersByDate = data.reduce((acc, transfer) => {
+                const date = new Date(transfer.data).toLocaleDateString(
+                    "en-US"
+                );
+                if (!acc[date]) {
+                    acc[date] = 0;
+                }
+                acc[date] += transfer.valor;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(transfersByDate);
+            const values = Object.values(transfersByDate);
+
+            const ctx = document.getElementById("myChart").getContext("2d");
+            const myChart = new Chart(ctx, {
+                type: "bar",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: values,
+                            borderColor: "#023e8a",
+                            backgroundColor: "rgba(2, 62, 138, 0.2)",
+                            fill: true,
+                            tension: 0.4,
+                        },
+                    ],
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: {
+                                color: "#03045e",
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: "Your Transfers",
+                            color: "#023e8a",
+                            font: {
+                                size: 18,
+                                fontweight: "bold",
+                            },
+                        },
+                    },
+                    animations: {
+                        tension: {
+                            duration: 1000,
+                            easing: "easeInOutQuad",
+                            from: 0.4,
+                            to: 0.2,
+                            loop: true,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "#023e8a",
+                            },
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: "#023e8a",
+                            },
+                        },
+                    },
+                },
+            });
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+});

@@ -16,7 +16,7 @@ public class ClientStandardDAO {
 
         try {
 
-            var sql = "INSERT INTO ClientStandard_bank (nome, sobrenome , cpf, email, password, saldo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            var sql = "INSERT INTO ClientStandard_bank (nome, sobrenome , cpf, email, password, saldo) VALUES (?, ?, ?, ?, ?, ?)";
 
             var stmt = connection.prepareStatement(sql);
 
@@ -25,7 +25,8 @@ public class ClientStandardDAO {
             stmt.setString(3, clientStandard.getCpf());
             stmt.setString(4, clientStandard.getEmail());
             stmt.setString(5, clientStandard.getPassword());
-            stmt.setDouble(6, clientStandard.getSaldo());
+            stmt.setDouble(6, 0);
+            
 
             stmt.execute();
 
@@ -151,10 +152,8 @@ public class ClientStandardDAO {
 
     }
 
-    public boolean Creditar(double valor, String cpf) {
-        try {
-            var sql = "UPDATE ClientStandard_bank SET saldo = saldo + ? WHERE cpf = ?";
-            var stmt = connection.prepareStatement(sql);
+    public boolean creditar(double valor, String cpf) {
+        try (var stmt = connection.prepareStatement("UPDATE ClientStandard_bank SET saldo = saldo + ? WHERE cpf = ?")) {
             stmt.setDouble(1, valor);
             stmt.setString(2, cpf);
             int rowsUpdated = stmt.executeUpdate();
