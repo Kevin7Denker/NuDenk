@@ -1,3 +1,7 @@
+body {
+    background-color: white;
+}
+
 header {
     background-color: var(--primary-color);
     color: white;
@@ -35,12 +39,91 @@ nav a {
     font-weight: bold;
 }
 
+h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+p {
+    font-size: 1rem;
+    font-weight: 500;
+    margin: 0.2rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1rem;
+    align-content: center;
+}
+
+input {
+    border: 2px solid transparent;
+    width: 15em;
+    height: 2.5em;
+    padding-left: 0.8em;
+    outline: none;
+    overflow: hidden;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    transition: all 0.5s;
+}
+
+input:hover,
+input:focus {
+    border: 2px solid #4a9dec;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+    background-color: white;
+}
+
+button {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 10px;
+    text-decoration: none;
+    width: 30%;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: var(--primary-color);
+    transition: all 0.5s ease-in-out;
+    scale: 1.1;
+}
+
+.terms {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        letter-spacing: -1px;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: -1px;
+    }
+
+    p {
+        font-size: 0.8rem;
+        text-align: justify;
+    }
+}
+
 .main-container {
     display: flex;
     width: 100%;
 }
 .sidebar {
-    min-width: 200px;
+    min-width: 250px;
     background-color: var(--primary-color);
     padding: 15px;
     height: calc(100vh - 80px);
@@ -60,6 +143,11 @@ nav a {
 .content {
     flex-grow: 1;
     padding: 1rem;
+
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px); /* Ajuste conforme necessário */
 }
 
 p {
