@@ -42,10 +42,17 @@
 
         <main>
             <section class="user-info">
-                <h2>Welcome, ${userName} ${userSurname}!</h2>
-                <p>Email: ${userEmail}</p>
-                <p>CPF: ${userCPF}</p>
-                <p>Balance: $${userBalance}</p>
+                <div class="part-one">
+                    <h2>Welcome, ${userName} ${userSurname}!</h2>
+                    <p>Email: ${userEmail}</p>
+                    <p>CPF: ${userCPF}</p>
+                    <p>Balance: $${userBalance}</p>
+                </div>
+                <div class="part-two">
+                    <a class="button" onclick="openModal('balanceModal')"
+                        >Balance</a
+                    >
+                </div>
             </section>
 
             <section>
@@ -63,6 +70,16 @@
                                     class="button"
                                     onclick="openModal('depositModal')"
                                     >Deposit</a
+                                >
+                                <a
+                                    class="button"
+                                    onclick="openModal('loanModal')"
+                                    >Loan</a
+                                >
+                                <a
+                                    class="button"
+                                    onclick="openModal('extractModal')"
+                                    >Extract</a
                                 >
                             </div>
                         </div>
@@ -153,11 +170,175 @@
 
         <div id="extractModal" class="modal">
             <div class="modal-content">
-                <span class="close" onclick="closeModal('extractModal')"
+            <div class="header">
+                <div class="texts">
+                    <h2>Extract</h2>
+                    <span class="close" onclick="closeModal('extractModal')"
+                    >&times;</span
+                    >
+                </div>
+                
+
+                <div class="toggle">
+                    <div class="toggle-buttons">
+                        <button onclick="showDeposits()">Deposits</button>
+                        <button onclick="showTransfers()">Transfers</button>
+                    </div>
+                </div>
+
+                
+            </div>
+            
+            <form>
+                <div id="depositsSection">
+                <h3>Deposits</h3>
+                <table id="depositTable">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+                <div id="transfersSection" style="display: none;">
+                <h3>Transfers</h3>
+                <table id="transferTable">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                </div>
+            </form>
+            </div>
+        </div>
+
+        </div>
+
+        <div id="loanModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('loanModal')"
                     >&times;</span
                 >
-                <h2>Extract</h2>
-                <form></form>
+                <h2>Loan</h2>
+                <form method="POST" action="/createLoan">
+                    <input
+                        type="text"
+                        name="valor"
+                        placeholder="amount"
+                        required
+                    />
+                    <input
+                        type="text"
+                        name="juros"
+                        placeholder="4% at month!"
+                        disabled
+                    />
+                    <input
+                        type="date"
+                        name="data_vencimento"
+                        placeholder="Due Date"
+                        required
+                    />
+
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div id="balanceModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal('balanceModal')"
+                    >&times;</span
+                >
+                <h2>Balance</h2>
+                <form id="balanceForm">
+                    <div class="balance-info-saldo">
+                        <p id="saldo"></p>
+                        <span
+                            class="material-symbols-outlined"
+                            onclick="openModal('saldoDetailsModal')"
+                            >visibility</span
+                        >
+                    </div>
+                    <div class="balance-info-limite">
+                        <p id="limite"></p>
+                        <span
+                            class="material-symbols-outlined"
+                            onclick="openModal('limiteDetailsModal')"
+                            >visibility
+                        </span>
+                    </div>
+
+                    <div class="balance-info-divida">
+                        <p id="divida"></p>
+                        <span
+                            class="material-symbols-outlined"
+                            onclick="openModal('dividaDetailsModal')"
+                            >visibility</span
+                        >
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="saldoDetailsModal" class="modal removeBg">
+            <div class="modal-content-details">
+                <div class="items">
+                    <h2>Balance Details</h2>
+                    <span
+                        class="close"
+                        onclick="closeModal('saldoDetailsModal')"
+                        >&times;</span
+                    >
+                </div>
+
+                <p>
+                    This section allows you to view your current balance. It
+                    provides detailed information about the amount of money you
+                    currently have available in your account.
+                </p>
+            </div>
+        </div>
+
+        <div id="limiteDetailsModal" class="modal removeBg">
+            <div class="modal-content-details">
+                <div class="items">
+                    <h2>Limit Details</h2>
+                    <span
+                        class="close"
+                        onclick="closeModal('limiteDetailsModal')"
+                        >&times;</span
+                    >
+                </div>
+
+                <p>
+                    This section shows the maximum amount of money you can
+                    borrow or the credit limit available to you. It provides
+                    details about your borrowing capacity.
+                </p>
+            </div>
+        </div>
+
+        <div id="dividaDetailsModal" class="modal removeBg">
+            <div class="modal-content-details">
+                <div class="items">
+                    <h2>Debts Details</h2>
+                    <span
+                        class="close"
+                        onclick="closeModal('dividaDetailsModal')"
+                        >&times;</span
+                    >
+                </div>
+                <p>
+                    This section provides information about your debts. It
+                    includes details about the amount of money you owe and any
+                    other relevant information regarding your outstanding debts.
+                </p>
             </div>
         </div>
     </body>

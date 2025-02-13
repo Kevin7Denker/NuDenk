@@ -6,6 +6,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import com.bank.data.dao.ClientStandardDAO;
 import com.bank.hooks.AuthContext;
+import com.bank.models.Balance;
 import com.bank.models.ClientStandard;
 
 import io.javalin.http.Context;
@@ -13,10 +14,14 @@ import io.javalin.http.Context;
 public class Auth {
 
     private static ClientStandardDAO clientStandardDAO;
+
+    private static Bank bankService;
+
     private static AuthContext context;
 
     public Auth() {
         clientStandardDAO = new ClientStandardDAO();
+        bankService = new Bank();
         context = new AuthContext();
     }
 
@@ -32,7 +37,7 @@ public class Auth {
                 throw new Error("Senha incorreta.");
             }
 
-            context.login(client.getEmail(), client.getCpf(), client.getNome(), client.getSobrenome(), client.getSaldo());
+            context.login(client.getEmail(), client.getCpf(), client.getNome(), client.getSobrenome());
 
             System.out.println("Cliente logado: " + client.getNome());
 
@@ -55,11 +60,10 @@ public class Auth {
 
             ClientStandard client = new ClientStandard(nome, sobrenome, cpf, email, hash);
 
-            boolean res = clientStandardDAO.createClientStandard(client);
+            clientStandardDAO.createClientStandard(client);
 
-            if (res == false) {
-                throw new Error("Erro ao cadastrar cliente.");
-            }
+            boolean result = bankService.createBalance(ctx, 0.0, 1000, 0.0);
+            System.out.println(result);
 
         } catch (Exception e) {
             throw new Error(e.getMessage());

@@ -2,10 +2,12 @@ function showComponent(component) {
     const content = document.getElementById("content");
     if (component === "user") {
         content.innerHTML = `
-            <h2>Update User Information</h2>
-            <form id="updateUserForm" action="/updateUser" method="post">
-                <label for="firstName">First Name:</label>
-                <input
+
+            <div>
+                <h2>Update User Information</h2>
+                <form id="updateUserForm" action="/updateUser" method="post">
+                    <label for="firstName">First Name:</label>
+                    <input
                     type="text"
                     id="firstName"
                     name="firstName"
@@ -16,7 +18,7 @@ function showComponent(component) {
 
                 <label for="lastName">Last Name:</label>
                 <input
-                    type="tex   t"
+                    type="text"
                     id="lastName"
                     name="lastName"
                     default="${userSurname}"
@@ -35,6 +37,8 @@ function showComponent(component) {
                 />
                 <button type="submit">Update</button>
             </form>
+            </div>
+            <div>
             <h2>Change Password</h2>
             <form>
                 <label for="currentPassword">Current Password:</label>
@@ -45,6 +49,52 @@ function showComponent(component) {
                 <input type="password" id="confirmPassword" required />
                 <button type="submit">Change Password</button>
             </form>
+            </div>
+            <div>
+            <h2>Update Address</h2>
+            <form id="updateAddressForm" action="/updateAddress" method="post">
+                <label for="rua">Street:</label>
+                <input
+                    type="text"
+                    id="rua"
+                    name="rua"
+                    required
+                />
+
+                <label for="numero">Number:</label>
+                <input
+                    type="number"
+                    id="numero"
+                    name="numero"
+                    required
+                />
+
+                <label for="cidade">City:</label>
+                <input
+                    type="text"
+                    id="cidade"
+                    name="cidade"
+                    required
+                />
+
+                <label for="estado">State:</label>
+                <input
+                    type="text"
+                    id="estado"
+                    name="estado"
+                    required
+                />
+
+                <label for="cep">ZIP Code:</label>
+                <input
+                    type="text"
+                    id="cep"
+                    name="cep"
+                    required
+                />
+                <button type="submit">Update Address</button>
+            </form>
+            </div>
         `;
     } else if (component === "options") {
         content.innerHTML = `

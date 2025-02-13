@@ -2,6 +2,8 @@ package com.bank.data.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.bank.data.jdbc.JDBCBank;
 import com.bank.models.Deposit;
@@ -31,7 +33,9 @@ public class DepositDAO {
         }
     }
 
-    public Deposit getDeposits(String cpf) {
+    public List<Deposit> getDeposits(String cpf) {
+
+        List<Deposit> deposits = new ArrayList<>();
 
         try {
 
@@ -47,13 +51,13 @@ public class DepositDAO {
 
                 Deposit deposit = new Deposit(rs.getString("cpf"), rs.getDate("data_deposito"), rs.getDouble("valor"));
 
-                return deposit;
+                deposits.add(deposit);
             }
-
-            return null;
 
         } catch (SQLException e) {
             return null;
         }
+
+        return deposits;
     }
 }

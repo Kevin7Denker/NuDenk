@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.bank.hooks.AuthContext;
+import com.bank.models.Balance;
 import com.bank.models.ClientStandard;
 import com.bank.repository.Auth;
 import com.bank.repository.Bank;
@@ -20,6 +21,7 @@ public class AuthController {
     private final Auth authRepo = new Auth();
 
 
+
     public Handler signUp = (Context ctx) -> {
         ctx.render("/pages/auth/register.html");
     };
@@ -33,7 +35,6 @@ public class AuthController {
             String password = ctx.formParam("password");
 
             authRepo.register(ctx, nome, sobrenome, cpf, email, password);
-
             ctx.redirect("/");
 
         } catch (NumberFormatException e) {
@@ -56,7 +57,7 @@ public class AuthController {
 
             if (client != null) {
 
-                String token = Token.gerarToken(client.getEmail(), client.getNome(), client.getSobrenome(), client.getCpf(), client.getSaldo());
+                String token = Token.gerarToken(client.getEmail(), client.getNome(), client.getSobrenome(), client.getCpf());
                 Cookie cookie = new Cookie("jwtToken", token);
                 cookie.setMaxAge(3600);
                 cookie.setHttpOnly(true);
@@ -121,13 +122,19 @@ public class AuthController {
                 String userSurname = authContext.getUserSurname();
                 String userEmail = authContext.getUserEmail();
                 String userCPF = authContext.getUserCPF();
-                Double userBalance = bankService.getSaldo(ctx, authContext.getUserCPF());
 
+                System.out.println(userCPF);
+
+                Balance userBalance = bankService.getSaldo(ctx);
+
+                System.out.println(userBalance);
+
+                String  userSaldo = String.valueOf(userBalance.getSaldo());
                 dados.put("userName", userName);
                 dados.put("userSurname", userSurname);
                 dados.put("userEmail", userEmail);
                 dados.put("userCPF", userCPF);
-                dados.put("userBalance", userBalance);
+                dados.put("userBalance", userSaldo);
 
                 ctx.render("/pages/private/home.html", dados);
             }

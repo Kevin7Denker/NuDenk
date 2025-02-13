@@ -22,13 +22,12 @@ public class Token {
         }
     }
 
-    public static String gerarToken(String email, String nome, String sobrenome, String cpf, double saldo) {
+    public static String gerarToken(String email, String nome, String sobrenome, String cpf) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("email", email);
         claims.put("nome", nome);
         claims.put("sobrenome", sobrenome);
         claims.put("cpf", cpf);
-        claims.put("saldo", saldo);
         claims.put("isLoggedIn", true);
 
         return Jwts.builder()

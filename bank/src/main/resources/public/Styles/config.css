@@ -1,3 +1,7 @@
+body {
+    background-color: white;
+}
+
 header {
     background-color: var(--primary-color);
     color: white;
@@ -35,6 +39,53 @@ nav a {
     font-weight: bold;
 }
 
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    gap: 1rem;
+}
+
+input {
+    border: 2px solid transparent;
+    width: 15em;
+    height: 2.5em;
+    padding-left: 0.8em;
+    outline: none;
+    overflow: hidden;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    transition: all 0.5s;
+}
+
+input:hover,
+input:focus {
+    border: 2px solid #4a9dec;
+    box-shadow: 0px 0px 0px 7px rgb(74, 157, 236, 20%);
+    background-color: white;
+}
+
+button {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 10px 10px;
+    text-decoration: none;
+    width: 25%;
+    border-radius: 5px;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    margin-bottom: 1rem;
+}
+
+button:hover {
+    background-color: var(--primary-color);
+    transition: all 0.5s ease-in-out;
+    scale: 1.1;
+}
+
 .main-container {
     display: flex;
     width: 100%;
@@ -60,6 +111,8 @@ nav a {
 .content {
     flex-grow: 1;
     padding: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px); /* Ajuste conforme necessário */
 }
 
 p {
@@ -75,4 +128,44 @@ p {
 .sidebar a:hover {
     background-color: var(--secondary-color);
     transition: 0.5s ease;
+}
+
+.terms {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: 2rem auto;
+    line-height: 1.6;
+}
+
+.terms h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.terms h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+.terms p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.terms b {
+    color: var(--primary-color);
+}
+
+.terms ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+.terms ul li {
+    margin-bottom: 0.5rem;
 }

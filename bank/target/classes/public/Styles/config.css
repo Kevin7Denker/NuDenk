@@ -39,24 +39,12 @@ nav a {
     font-weight: bold;
 }
 
-h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: -1px;
-}
-
-p {
-    font-size: 1rem;
-    font-weight: 500;
-    margin: 0.2rem;
-}
-
 form {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    height: auto;
     gap: 1rem;
-    margin: 1rem;
-    align-content: center;
 }
 
 input {
@@ -83,8 +71,13 @@ button {
     color: white;
     padding: 10px 10px;
     text-decoration: none;
-    width: 30%;
+    width: 25%;
     border-radius: 5px;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    margin-bottom: 1rem;
 }
 
 button:hover {
@@ -93,37 +86,12 @@ button:hover {
     scale: 1.1;
 }
 
-.terms {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-
-    h2 {
-        font-size: 1.5rem;
-        font-weight: 600;
-        letter-spacing: -1px;
-    }
-
-    h3 {
-        font-size: 1.2rem;
-        font-weight: 600;
-        letter-spacing: -1px;
-    }
-
-    p {
-        font-size: 0.8rem;
-        text-align: justify;
-    }
-}
-
 .main-container {
     display: flex;
     width: 100%;
 }
 .sidebar {
-    min-width: 250px;
+    min-width: 200px;
     background-color: var(--primary-color);
     padding: 15px;
     height: calc(100vh - 80px);
@@ -143,9 +111,6 @@ button:hover {
 .content {
     flex-grow: 1;
     padding: 1rem;
-
-    flex-grow: 1;
-    padding: 1rem;
     overflow-y: auto;
     max-height: calc(100vh - 80px); /* Ajuste conforme necessário */
 }
@@ -163,4 +128,44 @@ p {
 .sidebar a:hover {
     background-color: var(--secondary-color);
     transition: 0.5s ease;
+}
+
+.terms {
+    padding: 2rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    margin: 2rem auto;
+    line-height: 1.6;
+}
+
+.terms h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.terms h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+.terms p {
+    font-size: 1rem;
+    color: #333;
+}
+
+.terms b {
+    color: var(--primary-color);
+}
+
+.terms ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+.terms ul li {
+    margin-bottom: 0.5rem;
 }

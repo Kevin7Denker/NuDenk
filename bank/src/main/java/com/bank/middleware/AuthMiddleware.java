@@ -17,8 +17,7 @@ public class AuthMiddleware {
                 Claims claims = Token.validarToken(token);
                 AuthContext authContext = new AuthContext();
                 authContext.login(claims.get("email").toString(), claims.get("cpf").toString(),
-                        claims.get("nome").toString(), claims.get("sobrenome").toString(),
-                        Double.parseDouble(claims.get("saldo").toString()));
+                        claims.get("nome").toString(), claims.get("sobrenome").toString());
 
                 ctx.attribute("authContext", authContext);
 

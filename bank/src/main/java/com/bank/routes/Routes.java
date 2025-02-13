@@ -31,7 +31,8 @@ public class Routes {
 
         app.get("/register", ctx -> {
             if (ctx.attribute("authContext") != null) {
-                ctx.status(403).result("Already logged in");
+                ctx.json("Already logged in");
+                ctx.redirect("/");
             } else {
                 authController.signUp.handle(ctx);
             }
@@ -39,16 +40,19 @@ public class Routes {
 
         app.post("/register", ctx -> {
             if (ctx.attribute("authContext") != null) {
-                ctx.status(403).result("Already logged in");
+                ctx.json("Already logged in");
+                ctx.redirect("/");
             } else {
                 authController.register.handle(ctx);
+                ctx.json("Registered successfully");
                 ctx.redirect("/");
             }
         });
 
         app.get("/login", ctx -> {
             if (ctx.attribute("authContext") != null) {
-                ctx.status(403).result("Already logged in");
+                ctx.json("Already logged in");
+                ctx.redirect("/");
             } else {
                 authController.signIn.handle(ctx);
             }
@@ -56,17 +60,20 @@ public class Routes {
 
         app.post("/login", ctx -> {
             if (ctx.attribute("authContext") != null) {
-                ctx.status(403).result("Already logged in");
+                ctx.json("Already logged in");
+                ctx.redirect("/");
             } else {
                 authController.login.handle(ctx);
+                ctx.redirect("/");
             }
         });
 
         app.post("/credit", ctx -> {
             if (ctx.attribute("authContext") != null) {
                 bankController.credit.handle(ctx);
+                ctx.redirect("/");
             } else {
-                ctx.status(401).result("Unauthorized");
+                ctx.json("Unauthorized: Please log in.");
                 ctx.redirect("/");
             }
         });
@@ -75,7 +82,7 @@ public class Routes {
             if (ctx.attribute("authContext") != null) {
                 authController.config.handle(ctx);
             } else {
-                ctx.status(401).result("Unauthorized");
+                ctx.json("Unauthorized: Please log in.");
                 ctx.redirect("/");
             }
         });
@@ -83,8 +90,9 @@ public class Routes {
         app.post("/transfer", ctx -> {
             if (ctx.attribute("authContext") != null) {
                 bankController.transfer.handle(ctx);
+                ctx.redirect("/");
             } else {
-                ctx.status(401).result("Unauthorized");
+                ctx.json("Unauthorized: Please log in.");
                 ctx.redirect("/");
             }
         });
@@ -93,7 +101,7 @@ public class Routes {
             if (ctx.attribute("authContext") != null) {
                 authController.updateUser.handle(ctx);
             } else {
-                ctx.status(401).result("Unauthorized");
+                ctx.json("Unauthorized: Please log in.");
                 ctx.redirect("/");
             }
         });
@@ -102,10 +110,47 @@ public class Routes {
             if (ctx.attribute("authContext") != null) {
                 bankController.getRecentTransfers.handle(ctx);
             } else {
-                ctx.status(401).result("Unauthorized");
+                ctx.json("Unauthorized: Please log in.");
                 ctx.redirect("/");
             }
         });
+
+        app.get("/getBalance", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.getBalance.handle(ctx);
+            } else {
+                ctx.json("Unauthorized: Please log in.");
+                ctx.redirect("/");
+            }
+        });
+
+        app.get("/getLoan", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.getLoan.handle(ctx);
+            } else {
+                ctx.json("Unauthorized: Please log in.");
+                ctx.redirect("/");
+            }
+        });
+
+        app.post("/createLoan", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.createLoan.handle(ctx);
+            } else {
+                ctx.json("Unauthorized: Please log in.");
+                ctx.redirect("/");
+            }
+        });
+
+        app.get("/getDeposits", ctx -> {
+            if (ctx.attribute("authContext") != null) {
+                bankController.getDeposits.handle(ctx);
+            } else {
+                ctx.json("Unauthorized: Please log in.");
+                ctx.redirect("/");
+            }
+        });
+
     }
 
 }

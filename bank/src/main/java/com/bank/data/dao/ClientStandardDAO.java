@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import com.bank.data.jdbc.JDBCBank;
 import com.bank.models.ClientStandard;
+import com.bank.models.Deposit;
+import com.github.hugoperlin.results.Resultado;
 
 public class ClientStandardDAO {
 
@@ -16,7 +18,7 @@ public class ClientStandardDAO {
 
         try {
 
-            var sql = "INSERT INTO ClientStandard_bank (nome, sobrenome , cpf, email, password, saldo) VALUES (?, ?, ?, ?, ?, ?)";
+            var sql = "INSERT INTO ClientStandard_bank (nome, sobrenome , cpf, email, password) VALUES (?, ?, ?, ?, ?)";
 
             var stmt = connection.prepareStatement(sql);
 
@@ -25,8 +27,6 @@ public class ClientStandardDAO {
             stmt.setString(3, clientStandard.getCpf());
             stmt.setString(4, clientStandard.getEmail());
             stmt.setString(5, clientStandard.getPassword());
-            stmt.setDouble(6, 0);
-            
 
             stmt.execute();
 
@@ -150,49 +150,6 @@ public class ClientStandardDAO {
             return false;
         }
 
-    }
-
-    public boolean creditar(double valor, String cpf) {
-        try (var stmt = connection.prepareStatement("UPDATE ClientStandard_bank SET saldo = saldo + ? WHERE cpf = ?")) {
-            stmt.setDouble(1, valor);
-            stmt.setString(2, cpf);
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean Debitar(double valor, String cpf) {
-        try {
-            var sql = "UPDATE ClientStandard_bank SET saldo = saldo - ? WHERE cpf = ?";
-            var stmt = connection.prepareStatement(sql);
-            stmt.setDouble(1, valor);
-            stmt.setString(2, cpf);
-            int rowsUpdated = stmt.executeUpdate();
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-    }
-
-    public Double getBalance(String cpf) {
-        try {
-            var sql = "SELECT saldo FROM ClientStandard_bank WHERE cpf = ?";
-            var stmt = connection.prepareStatement(sql);
-            stmt.setString(1, cpf);
-            var rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getDouble("saldo");
-            }
-            return 0.0;
-        } catch (SQLException e) {
-            System.err.println(e.getMessage());
-            return 0.0;
-        }
     }
 
 }

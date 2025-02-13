@@ -15,16 +15,14 @@ public class AuthContext {
         this.userCPF = null;
         this.userSurname = null;
         this.userName = null;
-        this.userBalance = 0.0;
     }
 
-    public void login(String email, String cpf, String nome, String sobrenome, double valor) {
+    public void login(String email, String cpf, String nome, String sobrenome) {
         this.loggedIn = true;
         this.userEmail = email;
         this.userCPF = cpf;
         this.userName = nome;
         this.userSurname = sobrenome;
-        this.userBalance = valor;
     }
 
     public void logout() {
@@ -33,8 +31,6 @@ public class AuthContext {
         this.userName = null;
         this.userCPF = null;
         this.userSurname = null;
-
-        this.userBalance = 0.0;
     }
 
     public boolean isLoggedIn() {
@@ -53,9 +49,6 @@ public class AuthContext {
         return userSurname;
     }
 
-    public double getUserBalance() {
-        return userBalance;
-    }
 
     public String getUserCPF() {
         return userCPF;

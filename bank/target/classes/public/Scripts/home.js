@@ -1,12 +1,125 @@
+let transferDays = {}; // Object to store transfer days
+
+let depositDays = {}; // Object to store deposit days
+
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("/getTransfersRecent")
+        .then((response) => response.json())
+        .then((data) => {
+            const transfersByDate = data.reduce((acc, transfer) => {
+                const date = new Date(transfer.data).toLocaleDateString(
+                    "pt-BR"
+                );
+                if (!acc[date]) {
+                    acc[date] = 0;
+                }
+                acc[date] += transfer.valor;
+                return acc;
+            }, {});
+
+            transferDays = transfersByDate;
+
+            const labels = Object.keys(transfersByDate);
+            const values = Object.values(transfersByDate);
+
+            const ctx = document.getElementById("myChart").getContext("2d");
+            const myChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            data: values,
+                            borderColor: "#023e8a",
+                            backgroundColor: "rgba(2, 62, 138, 0.2)",
+                            fill: true,
+                            tension: 0.4,
+                        },
+                    ],
+                },
+                options: {
+                    plugins: {
+                        legend: {
+                            display: false,
+                            labels: {
+                                color: "#03045e",
+                            },
+                        },
+                        title: {
+                            display: true,
+                            text: "Your Transfers",
+                            color: "#023e8a",
+                            font: {
+                                size: 18,
+                                fontweight: "bold",
+                            },
+                        },
+                    },
+                    animations: {
+                        tension: {
+                            duration: 1000,
+                            easing: "easeInOutQuad",
+                            from: 0.4,
+                            to: 0.2,
+                            loop: true,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: "#023e8a",
+                            },
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: "#023e8a",
+                            },
+                        },
+                    },
+                },
+            });
+
+            generateCalendar(currentMonth.value, currentYear.value);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+
+    fetch("/getDeposits")
+        .then((response) => response.json())
+        .then((data) => {
+            const formatDate = (timestamp) => {
+                const date = new Date(timestamp);
+                return date.toLocaleDateString("pt-BR");
+            };
+
+            const depositsByDate = data.reduce((acc, deposit) => {
+                const formattedDate = formatDate(deposit.data);
+
+                if (!acc[formattedDate]) {
+                    acc[formattedDate] = 0;
+                }
+                acc[formattedDate] += deposit.valor;
+                return acc;
+            }, {});
+
+            depositDays = depositsByDate;
+
+            generateCalendar(currentMonth.value, currentYear.value);
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+});
+
 const isLeapYear = (year) => {
     return (
         (year % 4 === 0 && year % 100 !== 0 && year % 400 !== 0) ||
         (year % 100 === 0 && year % 400 === 0)
     );
 };
+
 const getFebDays = (year) => {
     return isLeapYear(year) ? 29 : 28;
 };
+
 let calendar = document.querySelector(".calendar");
 const month_names = [
     "January",
@@ -70,14 +183,31 @@ const generateCalendar = (month, year) => {
         let day = document.createElement("div");
 
         if (i >= first_day.getDay()) {
-            day.innerHTML = i - first_day.getDay() + 1;
+            let dayNumber = i - first_day.getDay() + 1;
+            day.innerHTML = dayNumber;
 
             if (
-                i - first_day.getDay() + 1 === currentDate.getDate() &&
+                dayNumber === currentDate.getDate() &&
                 year === currentDate.getFullYear() &&
                 month === currentDate.getMonth()
             ) {
                 day.classList.add("current-date");
+            }
+
+            let dateKey = new Date(year, month, dayNumber).toLocaleDateString(
+                "pt-BR"
+            );
+
+            if (transferDays[dateKey]) {
+                day.classList.add("transfer-date");
+            }
+
+            if (depositDays[dateKey]) {
+                day.classList.add("deposit-date");
+            }
+
+            if (depositDays[dateKey] && transferDays[dateKey]) {
+                day.classList.add("duo-date");
             }
         }
         calendar_days.appendChild(day);
@@ -189,82 +319,68 @@ window.onclick = function (event) {
     }
 };
 
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("/getTransfersRecent")
+document.addEventListener("DOMContentLoaded", () => {
+    document
+        .querySelector(".button[onclick=\"openModal('balanceModal')\"]")
+        .addEventListener("click", fetchBalance);
+});
+
+async function fetchBalance() {
+    try {
+        const response = await fetch("/getBalance");
+        const data = await response.json();
+        document.getElementById("saldo").innerText = `Balance: ${data.saldo}`;
+        document.getElementById("limite").innerText = `Limit: ${data.limite}`;
+        document.getElementById("divida").innerText = `Debt: ${data.divida}`;
+    } catch (error) {
+        console.error("Error fetching balance:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+    let deposits = [];
+    let transfer = [];
+
+    await fetch("/getDeposits")
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
-            const transfersByDate = data.reduce((acc, transfer) => {
-                const date = new Date(transfer.data).toLocaleDateString(
-                    "en-US"
-                );
-                if (!acc[date]) {
-                    acc[date] = 0;
-                }
-                acc[date] += transfer.valor;
-                return acc;
-            }, {});
-
-            const labels = Object.keys(transfersByDate);
-            const values = Object.values(transfersByDate);
-
-            const ctx = document.getElementById("myChart").getContext("2d");
-            const myChart = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels: labels,
-                    datasets: [
-                        {
-                            data: values,
-                            borderColor: "#023e8a",
-                            backgroundColor: "rgba(2, 62, 138, 0.2)",
-                            fill: true,
-                            tension: 0.4,
-                        },
-                    ],
-                },
-                options: {
-                    plugins: {
-                        legend: {
-                            display: false,
-                            labels: {
-                                color: "#03045e",
-                            },
-                        },
-                        title: {
-                            display: true,
-                            text: "Your Transfers",
-                            color: "#023e8a",
-                            font: {
-                                size: 18,
-                                fontweight: "bold",
-                            },
-                        },
-                    },
-                    animations: {
-                        tension: {
-                            duration: 1000,
-                            easing: "easeInOutQuad",
-                            from: 0.4,
-                            to: 0.2,
-                            loop: true,
-                        },
-                    },
-                    scales: {
-                        x: {
-                            ticks: {
-                                color: "#023e8a",
-                            },
-                        },
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                color: "#023e8a",
-                            },
-                        },
-                    },
-                },
-            });
+            deposits = data;
         })
-        .catch((error) => console.error("Error fetching data:", error));
+        .catch((error) => console.error("Error fetching deposits:", error));
+
+    await fetch("/getTransfersRecent")
+        .then((response) => response.json())
+        .then((data) => {
+            transfer = data;
+        })
+        .catch((error) => console.error("Error fetching transfers:", error));
+
+    const depositTable = document.getElementById("depositTable");
+    const transferTable = document.getElementById("transferTable");
+
+    deposits.forEach((deposit) => {
+        const row = depositTable.insertRow();
+        row.insertCell().innerText = new Date(deposit.data).toLocaleDateString(
+            "pt-BR"
+        );
+        row.insertCell().innerText = deposit.valor;
+    });
+
+    transfer.forEach((transfer) => {
+        const row = transferTable.insertRow();
+        row.insertCell().innerText = new Date(transfer.data).toLocaleDateString(
+            "pt-BR"
+        );
+        row.insertCell().innerText = transfer.valor;
+    });
 });
+
+function showDeposits() {
+    document.getElementById("depositsSection").style.display = "block";
+    document.getElementById("transfersSection").style.display = "none";
+}
+
+function showTransfers() {
+    document.getElementById("depositsSection").style.display = "none";
+    document.getElementById("transfersSection").style.display = "block";
+}
